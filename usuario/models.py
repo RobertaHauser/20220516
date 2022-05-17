@@ -4,19 +4,13 @@ from django.contrib.auth.models import(BaseUserManager,AbstractBaseUser,Permissi
 # Create your models here.
 
 class UsuarioManager(BaseUserManager):
-    #def create_user(self,email,password,first_name,last_name):
+
     def create_user(self,email,password):
-        """
-        if not email:
-            raise ValueError('Email must be provided')
-        if not password:
-            raise ValueError('Password is not provided')
-        """
+
         usuario=self.model(
             email=self.normalize_email(email),
             password=password,
-            #first_name=first_name,
-            #last_name=last_name,
+            
         )
 
         usuario.is_active=True
@@ -43,19 +37,18 @@ class UsuarioManager(BaseUserManager):
 
 
 class Usuario(AbstractBaseUser, PermissionsMixin):
-    email=models.EmailField(verbose_name="E-mail", max_length=194,unique=True)
-    first_name=models.CharField(verbose_name="Nome",max_length=240)
-    last_name=models.CharField(verbose_name="Sobrenome",max_length=240)
+    email=models.EmailField(verbose_name="E-mail", max_length=194,unique=True,)
+
  
     is_active= models.BooleanField(verbose_name="Usuário ativo",default=True,)
     is_staff= models.BooleanField(verbose_name="Usuário equipe desenvolvimento",default=False,)
     is_superuser= models.BooleanField(verbose_name="Usuário superusuário",default=False,)
- 
-    objects = UsuarioManager()
+
  
     USERNAME_FIELD='email'
-    REQUIRED_FIELDS=['first_name','last_name']
  
+    objects = UsuarioManager()
+
     class Meta:
         verbose_name="Usuário"
         verbose_name_plural="Usuários"
